@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load homework_tags %}
+
+{% block title %}All homework - {{ block.super }}{% endblock %}
+
+{% block main_content %}
+{% if homework %}
+    <table cellspacing="0" cellpadding="0" width="100%" style="font-size: 9pt;">
+        <tr>
+            <td style="padding-bottom: 10px;"><strong>Subject</strong></td>
+            <td style="padding-bottom: 10px;"><strong>Short description</strong></td>
+            <td style="padding-bottom: 10px;"><strong>Until</strong></td>
+            {% if authenticated %}
+                <td style="padding-bottom: 10px;"><strong>Finished?</strong></td>
+            {% endif %}
+        </tr>
+        {% for hw in homework %}
+            {% homework_on_main_list hw %}
+        {% endfor %}
+    </table>
+{% else %}
+    There is no homework.
+{% endif %}
+{% endblock %}
