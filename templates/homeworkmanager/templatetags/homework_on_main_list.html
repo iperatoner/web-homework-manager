@@ -6,6 +6,7 @@
         <td>
             <form method="post" action="{% url hw_toggle_finished %}">
                 <input type="hidden" name="homework_id" value="{{ homework.id }}" />
+                <input type="hidden" name="orderby" value="{{ orderby }}" />
                 {% if finished %}
                     <input type="submit" value="Set unfinished" />
                 {% else %}

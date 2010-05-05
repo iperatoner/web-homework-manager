@@ -16,6 +16,7 @@ def homework_on_main_list(context, homework):
         
         data.update({
             'finished': finished,
+            'orderby' : context['orderby'],
             'authenticated': True,
         })
     else:

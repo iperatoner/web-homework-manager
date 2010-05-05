@@ -6,26 +6,28 @@ from django.template import RequestContext
 
 from homeworkmanager.models import Teacher, Subject, Homework, UserProfile
 from homeworkmanager.models import HomeworkComment, FinishedHomework
+from homeworkmanager.forms import HomeworkForm
 
 HOMEWORK_ORDER_BY = {
     'ends-soon-first' : 'date_ends',
     'ends-soon-last' : '-date_ends',
-    'subject-a-first' : 'subject__name',
-    'subject-a-last' : '-subject__name'
+    'az' : 'subject__name',
+    'za' : '-subject__name'
 }
 DEFAULT_ORDER_BY = 'ends-soon-first'
 
 def list_all_homework(request, orderby='ends-soon-first', groupby='subject'):
 
     if orderby not in HOMEWORK_ORDER_BY:
-        orderby = HOMEWORK_ORDER_BY[DEFAULT_ORDER_BY]
+        model_orderby = HOMEWORK_ORDER_BY[DEFAULT_ORDER_BY]
     else:
-        orderby = HOMEWORK_ORDER_BY[orderby]
+        model_orderby = HOMEWORK_ORDER_BY[orderby]
         
-    homework = Homework.objects.all().order_by(orderby)
+    homework = Homework.objects.all().order_by(model_orderby)
         
     data = {
         'homework' : homework,
+        'orderby' : orderby,
         'authenticated' : request.user.is_authenticated()
     }
     
@@ -39,14 +41,45 @@ def list_all_homework(request, orderby='ends-soon-first', groupby='subject'):
 def list_subjects_homework(request, subject_name):
     pass
 
+
 def show_homework(request, subject_name, homework_id):
     pass
 
-def edit_homework(request):
-    pass
 
+@login_required
+def edit_homework(request, subject_name=False, homework_id=False):
+    if subject_name and homework_id:
+        homework = get_object_or_404(Homework, id=homework_id)
+        
+        if homework.subject.name != subject_name:
+            raise Http404
+            
+        form = HomeworkForm(instance=homework)
+        exists = True
+    else:
+        form = HomeworkForm(request.POST or None)
+        exists = False
+
+    if form.is_valid() and not exists:
+        homework = form.save()
+        request.user.message_set.create(message="Your event was posted.")
+        return HttpResponseRedirect(reverse('hw_list_all'))
+
+    data = {
+        'form': form,
+        'exists': exists
+    }
+
+    return render_to_response(
+        'homeworkmanager/edit.html',
+        data,
+        context_instance = RequestContext(request),
+    )
+
+    
 def remove_homework(request):
     pass
+
 
 @login_required
 def toggle_finished(request):
@@ -62,6 +95,14 @@ def toggle_finished(request):
 
     if not had_to_create:
         finished_homework.delete()
-
-    return HttpResponseRedirect(reverse('hw_list_all'))
+        
+    try:
+        if request.POST['orderby'] == DEFAULT_ORDER_BY:
+            next = reverse('hw_list_all')
+        else:
+            next = reverse('hw_list_all_sorted', args=[request.POST['orderby']])
+    except KeyError:
+        raise Http404
+        
+    return HttpResponseRedirect(next)
     
