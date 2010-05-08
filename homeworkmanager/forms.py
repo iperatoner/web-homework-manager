@@ -1,5 +1,7 @@
 from django import forms
-from homeworkmanager.models import Homework, Subject
+from django.contrib.admin import widgets as adminwidgets
+
+from homeworkmanager.models import Homework, HomeworkComment, Subject
 
 class HomeworkForm(forms.ModelForm):
     subject = forms.ModelChoiceField(queryset=Subject.objects.all())
@@ -7,13 +9,17 @@ class HomeworkForm(forms.ModelForm):
     short_description = forms.CharField(max_length=128)
     long_description = forms.CharField(max_length=1024, widget=forms.Textarea)
     
-    date_ends = forms.DateTimeField()
+    date_ends = forms.DateField(widget=adminwidgets.AdminDateWidget())
     date_ends.input_formats = [
         '%d/%m/%Y',
         '%d/%m/%y',
 
         '%d.%m.%Y',
         '%d.%m.%y',
+
+        '%Y-%m-%d',
+        '%y-%m-%d',
+        '%Y-%m-%d %H:%M:%S',
         
         '%d %m %Y',
         '%d %m %y',
@@ -22,3 +28,10 @@ class HomeworkForm(forms.ModelForm):
     class Meta(object):
         model = Homework
         fields = ('subject', 'short_description', 'long_description', 'date_ends',)
+
+class HomeworkCommentForm(forms.ModelForm):
+    text = forms.CharField(max_length=2048, widget=forms.Textarea)
+    
+    class Meta(object):
+        model = HomeworkComment
+        fields = ('text',)

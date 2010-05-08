@@ -1,9 +1,27 @@
 {% extends "base.html" %}
 
 {% block title %}Edit homework - {{ block.super }}{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}admin/css/widgets.css"/>
+<script type="text/javascript" src="/my_admin/jsi18n/"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}admin/js/core.js"></script>
+{{ form.media }}
+{% endblock %}
+
+{% block page_title %}Edit{% endblock %}
 
 {% block main_content %}
-    <form method="post" action="{% url hw_create %}">
+    <form method="post" 
+        {% if new %}
+        action="{% url hw_create %}"
+        {% else %}
+            {% if not next %}
+                action="{% url hw_edit homework.subject.name homework.id %}"
+            {% else %}
+                action="{% url hw_edit homework.subject.name homework.id %}?next={{ next }}"
+            {% endif %}
+        {% endif %}
+    >
         <table>
             {{ form.as_table }}
         </table>

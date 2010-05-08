@@ -1,0 +1,7 @@
+<div class="comment" style="border-bottom: 1px solid #cfcfcf; padding: 10px;">
+    <p>
+        <strong>User:</strong> {{ comment.user.username }}
+        ({% if finished_related_homework %}<span style="color: green;">finished</span>{% else %}<span style="color: red;">not yet finished</span>{% endif %})
+    {{ comment.date_added|date:"d.m. H:i" }}</p>
+    <p>{{ comment.text }}</p>
+</div>

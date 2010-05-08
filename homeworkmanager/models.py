@@ -15,7 +15,7 @@ class Subject(models.Model):
     teacher = models.ForeignKey(Teacher)
 
     def __unicode__(self):
-        return '"%s" (%s %s)' % (self.name, 
+        return '%s (%s %s)' % (self.name, 
             self.teacher.gender_title, self.teacher.surname)
 
 
@@ -27,7 +27,7 @@ class Homework(models.Model):
     date_ends = models.DateTimeField(null=True, blank=True)
 
     def __unicode__(self):
-        return '"%s" (%s)' % (self.short_description,
+        return '%s (%s)' % (self.short_description,
             self.subject.name)
 
 

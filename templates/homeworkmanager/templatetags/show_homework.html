@@ -1,0 +1,32 @@
+<p><strong>Subject:</strong> {{ homework.subject.name }}</p>
+<p><strong>Ends:</strong> {{ homework.date_ends }}</p>
+<p><strong>Short description:</strong> {{ homework.short_description }}</p>
+<p><strong>Description:</strong> {{ homework.long_description }}</p>
+{% if authenticated %}
+    <p><strong>Finished?</strong></p>
+    <form method="post" action="{% url hw_toggle_finished homework.id %}">
+        <input type="hidden" name="show_homework" value="true" />
+        {% if finished %}
+            <input type="submit" value="Set unfinished" />
+        {% else %}
+            <input type="submit" value="Set finished" />
+        {% endif %}
+    </form>
+{% endif %}
+
+{% if can_edit_homework or can_delete_homework %}
+    <p><strong>Admin options:</strong>
+{% endif %}
+
+{% if can_edit_homework %}
+    <a href="{% url hw_edit homework.subject.name homework.id %}?next=hw_show">
+    <input type="button" value="Edit" /></a>
+{% endif %}
+
+{% if can_delete_homework %}
+    <a href="{% url hw_remove homework.id %}"><input type="button" value="Delete" /></a>
+{% endif %}
+
+{% if can_edit_homework or can_delete_homework %}
+    </p>
+{% endif %}
