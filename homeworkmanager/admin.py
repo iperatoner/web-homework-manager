@@ -1,5 +1,6 @@
 from django.contrib import admin
-from homeworkmanager.models import Teacher, Subject, Homework, HomeworkComment, FinishedHomework, UserProfile
+from homeworkmanager.models import Teacher, Subject, Homework, HomeworkComment
+from homeworkmanager.models import FinishedHomework, UserProfile
 
 admin.site.register(Teacher)
 admin.site.register(Subject)

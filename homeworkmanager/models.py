@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User    
 
 class Teacher(models.Model):
+    """Model representing a teacher."""
+    
     gender_title = models.CharField(max_length=16)
     surname = models.CharField(max_length=32)
 
@@ -11,6 +13,8 @@ class Teacher(models.Model):
 
 
 class Subject(models.Model):
+    """Model representing a subject."""
+    
     name = models.CharField(max_length=32)
     teacher = models.ForeignKey(Teacher)
 
@@ -20,6 +24,8 @@ class Subject(models.Model):
 
 
 class Homework(models.Model):
+    """Model representing one homework in a specific subject."""
+    
     short_description = models.CharField(max_length=128)
     long_description = models.TextField()
     subject = models.ForeignKey(Subject)
@@ -32,6 +38,8 @@ class Homework(models.Model):
 
 
 class UserProfile(models.Model):
+    """Model representing a user profile, e.g. holding finished homework."""
+    
     user = models.ForeignKey(User, unique=True)
     test = models.CharField(max_length=10,default='')
     finished_homework = models.ManyToManyField(Homework, 
@@ -42,6 +50,8 @@ class UserProfile(models.Model):
 
 
 class FinishedHomework(models.Model):
+    """Model representing one homework that was finished by one user."""
+    
     user_profile = models.ForeignKey(UserProfile)
     homework = models.ForeignKey(Homework)
     date_finished = models.DateTimeField(default=datetime.now)
@@ -52,6 +62,8 @@ class FinishedHomework(models.Model):
 
 
 class HomeworkComment(models.Model):
+    """Model representing a comment on one homework."""
+    
     user = models.ForeignKey(User)
     homework = models.ForeignKey(Homework, related_name='comment_set')
     date_added = models.DateTimeField(default=datetime.now)

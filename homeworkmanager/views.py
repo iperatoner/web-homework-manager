@@ -14,6 +14,7 @@ from homeworkmanager.models import HomeworkComment, FinishedHomework
 from homeworkmanager.forms import HomeworkForm, HomeworkCommentForm
 from homeworkmanager.util import get_homework_or_404
 
+# Ordering possibilities
 HOMEWORK_ORDER_BY = {
     'ends-soon-first' : 'date_ends',
     'ends-soon-last' : '-date_ends',
@@ -23,7 +24,9 @@ HOMEWORK_ORDER_BY = {
 DEFAULT_ORDER_BY = 'ends-soon-first'
 
 def list_all_homework(request, orderby='ends-soon-first', groupby='subject'):
-
+    """This view lists all available homework in a specific order."""
+    
+    # Choose the correct ordering type
     if orderby not in HOMEWORK_ORDER_BY:
         model_orderby = HOMEWORK_ORDER_BY[DEFAULT_ORDER_BY]
     else:
@@ -34,7 +37,8 @@ def list_all_homework(request, orderby='ends-soon-first', groupby='subject'):
     data = {
         'homework' : homework,
         'orderby' : orderby,
-        'can_add_homework' : request.user.has_perm('homeworkmanager.add_homework'),
+        'can_add_homework' : request.user.has_perm(
+            'homeworkmanager.add_homework'),
     }
     
     return render_to_response(
@@ -45,8 +49,11 @@ def list_all_homework(request, orderby='ends-soon-first', groupby='subject'):
     
 
 def show_homework(request, subject_name, homework_id, form=False):
+    """This view shows a single homework and all its comments."""
+    
     homework = get_homework_or_404(subject_name, homework_id)
-        
+    
+    # Create a comment form if it's not given (via the `add_comment` view)
     if not form:
         form = HomeworkCommentForm()
         
@@ -64,6 +71,9 @@ def show_homework(request, subject_name, homework_id, form=False):
 
 @permission_required('homeworkmanager.add_homework')
 def create_homework(request):
+    """This view displays a form for creating a homework resp. 
+    creates a homework using the form data."""
+    
     form = HomeworkForm(request.POST or None)
 
     if form.is_valid():
@@ -86,8 +96,13 @@ def create_homework(request):
 
 @permission_required('homeworkmanager.change_homework')
 def edit_homework(request, subject_name, homework_id):
+    """This view displays a form to edit a homework resp.
+    saves a homework using the form data."""
+    
     homework = get_homework_or_404(subject_name, homework_id)
     
+    # Check if a `next_view` was specified in POST data 
+    # (e.g. when clicking "edit" from a single displayed homework)
     if 'next_view' in request.POST.keys():
         next_view = request.POST['next_view']
     else:
@@ -109,7 +124,8 @@ def edit_homework(request, subject_name, homework_id):
             request.user.message_set.create(message="Your homework was saved.")
             
             if next_view:
-                return HttpResponseRedirect(reverse(next_view, args=[homework.subject.name, homework.id]))
+                return HttpResponseRedirect(reverse(next_view, 
+                    args=[homework.subject.name, homework.id]))
             else:
                 return HttpResponseRedirect(reverse('hw_list_all'))
 
@@ -129,14 +145,21 @@ def edit_homework(request, subject_name, homework_id):
 
 @permission_required('homeworkmanager.delete_homework')  
 def remove_homework(request, homework_id):
+    """This view removes a homework by the given homework id."""
+    
     homework = get_object_or_404(Homework, id=homework_id)
     homework.delete()
     
     request.user.message_set.create(message="The homework was removed.")
     
     try:
-        if 'orderby' in request.POST.keys() and request.POST['orderby'] != DEFAULT_ORDER_BY:
-            next = reverse('hw_list_all_sorted', args=[request.POST['orderby']])
+        # If the remove button was pressed on the main homework list
+        # we have to check if the user has specified a different order
+        if 'orderby' in request.POST.keys() and
+            request.POST['orderby'] != DEFAULT_ORDER_BY:
+            
+            next = reverse('hw_list_all_sorted', 
+                args=[request.POST['orderby']])
         else:
             next = reverse('hw_list_all')
     except KeyError:
@@ -146,7 +169,10 @@ def remove_homework(request, homework_id):
 
 
 @login_required
-def toggle_finished(request, homework_id):        
+def toggle_finished(request, homework_id):   
+    """This view toggles a homework for the currently 
+    logged in user as finished/unfinished."""
+    
     homework = get_object_or_404(Homework, id=homework_id)
     user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
     
@@ -157,13 +183,17 @@ def toggle_finished(request, homework_id):
         finished_homework.delete()
         
     try:
+        # If the homework was toggled as finished/unfinished from the main list
+        # we have to check the specified ordering
         if 'show_homework' not in request.POST.keys():
             if request.POST['orderby'] != DEFAULT_ORDER_BY:
-                next = reverse('hw_list_all_sorted', args=[request.POST['orderby']])
+                next = reverse('hw_list_all_sorted',
+                    args=[request.POST['orderby']])
             else:
                 next = reverse('hw_list_all')
         else:
-            next = reverse('hw_show', args=[homework.subject.name, homework.id])
+            next = reverse('hw_show',
+                args=[homework.subject.name, homework.id])
     except KeyError:
         raise Http404
         
@@ -172,6 +202,8 @@ def toggle_finished(request, homework_id):
 
 @login_required
 def add_comment(request, subject_name, homework_id):
+    """This view creates a comment on the given homework (subject name, id)."""
+    
     homework = get_homework_or_404(subject_name, homework_id)
     
     form = HomeworkCommentForm(request.POST or None)
@@ -195,12 +227,15 @@ def add_comment(request, subject_name, homework_id):
     
 
 def login(request):
+    """This view logs a user in resp. displays a form for logging in."""
+    
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse('hw_list_all'))
         
     invalid_login = False
     account_disabled = False
-        
+    
+    # Check if a redirect url has been specified
     if 'next' in request.GET.keys():
         next = request.GET['next']
     elif 'next' in request.POST.keys():
@@ -209,7 +244,8 @@ def login(request):
         next = False
     
     if request.POST:
-        user = django_authenticate(username=request.POST['username'], password=request.POST['password'])
+        user = django_authenticate(username=request.POST['username'],
+            password=request.POST['password'])
         if user is not None:
             if user.is_active:
                 django_login(request, user)
@@ -236,6 +272,7 @@ def login(request):
     
 
 def logout(request):
+    """This view just logs the currently logged in user out."""
+    
     django_logout(request)
-        
     return HttpResponseRedirect(reverse('hw_list_all'))

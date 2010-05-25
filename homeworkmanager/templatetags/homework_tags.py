@@ -10,6 +10,7 @@ register = template.Library()
     takes_context=True
 )
 def homework_on_main_list(context, homework):
+    """This inclusion tag shows a single homework on the main homework list."""
     data = {
         'homework': homework
     }
@@ -20,8 +21,10 @@ def homework_on_main_list(context, homework):
             'finished': finished,
             'orderby' : context['orderby'],
             'authenticated': True,
-            'can_change_homework': context['user'].has_perm('homeworkmanager.change_homework'),
-            'can_delete_homework': context['user'].has_perm('homeworkmanager.delete_homework')
+            'can_change_homework': context['user'].has_perm(
+                'homeworkmanager.change_homework'),
+            'can_delete_homework': context['user'].has_perm(
+                'homeworkmanager.delete_homework')
         })
     else:
         data['authenticated'] = False
@@ -34,6 +37,8 @@ def homework_on_main_list(context, homework):
     takes_context=True
 )
 def show_homework(context, homework):
+    """This inclusion tag shows a single homework and all its data."""
+    
     data = {
         'homework': homework,
     }
@@ -43,8 +48,10 @@ def show_homework(context, homework):
         data.update({
             'finished': finished,
             'authenticated': True,
-            'can_change_homework': context['user'].has_perm('homeworkmanager.change_homework'),
-            'can_delete_homework': context['user'].has_perm('homeworkmanager.delete_homework')
+            'can_change_homework': context['user'].has_perm(
+                'homeworkmanager.change_homework'),
+            'can_delete_homework': context['user'].has_perm(
+                'homeworkmanager.delete_homework')
         })
     else:
         data['authenticated'] = False
