@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Login - {{ block.super }}{% endblock %}
+
+{% block page_title %}Login{% endblock %}
+
+{% block main_content %}
+
+{% if account_disabled %}
+<strong>Your account is disabled, so you cannot login.</strong>
+{% endif %}
+
+{% if invalid_login %}
+<strong>Your username or your password was not valid.</strong>
+{% endif %}
+
+<form method="post" action="{% url hw_login %}">
+    Username: <input type="text" name="username" /><br />
+    Password: <input type="password" name="password" /><br />
+    {% if next %}
+        <input type="hidden" name="next" value="{{ next }}" />
+    {% endif %}
+    <input type="submit" value="Login" />
+</form>
+
+{% endblock %}

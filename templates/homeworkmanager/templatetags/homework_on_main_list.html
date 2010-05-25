@@ -14,7 +14,7 @@
             </form>
         </td>
     {% endif %}
-    {% if can_edit_homework %}
+    {% if can_change_homework %}
         <td>
             <form method="post" action="{% url hw_edit homework.subject.name homework.id %}">
                 <input type="submit" value="Edit" />

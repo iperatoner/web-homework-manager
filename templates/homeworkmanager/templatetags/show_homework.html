@@ -14,19 +14,21 @@
     </form>
 {% endif %}
 
-{% if can_edit_homework or can_delete_homework %}
+{% if can_change_homework or can_delete_homework %}
     <p><strong>Admin options:</strong>
 {% endif %}
 
-{% if can_edit_homework %}
-    <a href="{% url hw_edit homework.subject.name homework.id %}?next=hw_show">
-    <input type="button" value="Edit" /></a>
+{% if can_change_homework %}
+    <form method="post" action="{% url hw_edit homework.subject.name homework.id %}">
+        <input type="hidden" name="next_view" value="hw_show" />    
+        <input type="submit" value="Edit" />
+    </form>
 {% endif %}
 
 {% if can_delete_homework %}
-    <a href="{% url hw_remove homework.id %}"><input type="button" value="Delete" /></a>
+    <a href="{% url hw_remove homework.id %}">Delete</a>
 {% endif %}
 
-{% if can_edit_homework or can_delete_homework %}
+{% if can_change_homework or can_delete_homework %}
     </p>
 {% endif %}

@@ -29,6 +29,7 @@ class HomeworkForm(forms.ModelForm):
         model = Homework
         fields = ('subject', 'short_description', 'long_description', 'date_ends',)
 
+
 class HomeworkCommentForm(forms.ModelForm):
     text = forms.CharField(max_length=2048, widget=forms.Textarea)
     

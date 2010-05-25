@@ -1,7 +1,12 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import Http404, HttpResponseRedirect
 from django.core.urlresolvers import reverse
+
+from django.contrib.auth import authenticate as django_authenticate
+from django.contrib.auth import login as django_login
+from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required, permission_required
+
 from django.template import RequestContext
 
 from homeworkmanager.models import Teacher, Subject, Homework, UserProfile
@@ -29,8 +34,7 @@ def list_all_homework(request, orderby='ends-soon-first', groupby='subject'):
     data = {
         'homework' : homework,
         'orderby' : orderby,
-        'authenticated' : request.user.is_authenticated(),
-        'can_add_homework' : request.user.has_perm('homeworkmanager.add_homework')
+        'can_add_homework' : request.user.has_perm('homeworkmanager.add_homework'),
     }
     
     return render_to_response(
@@ -48,8 +52,7 @@ def show_homework(request, subject_name, homework_id, form=False):
         
     data = {
         'homework': homework,
-        'form': form,
-        'authenticated': request.user.is_authenticated()
+        'form': form
     }
 
     return render_to_response(
@@ -85,12 +88,12 @@ def create_homework(request):
 def edit_homework(request, subject_name, homework_id):
     homework = get_homework_or_404(subject_name, homework_id)
     
-    if 'next' in request.GET.keys():
-        next = request.GET['next']
+    if 'next_view' in request.POST.keys():
+        next_view = request.POST['next_view']
     else:
-        next = False
+        next_view = False
     
-    if not request.POST:
+    if not request.POST or len(request.POST) == 1:
         form = HomeworkForm(instance=homework)
     else:
         form = HomeworkForm(request.POST)
@@ -105,8 +108,8 @@ def edit_homework(request, subject_name, homework_id):
             
             request.user.message_set.create(message="Your homework was saved.")
             
-            if next:
-                return HttpResponseRedirect(reverse(next, args=[homework.subject.name, homework.id]))
+            if next_view:
+                return HttpResponseRedirect(reverse(next_view, args=[homework.subject.name, homework.id]))
             else:
                 return HttpResponseRedirect(reverse('hw_list_all'))
 
@@ -114,7 +117,7 @@ def edit_homework(request, subject_name, homework_id):
         'form': form,
         'new': False,
         'homework': homework,
-        'next': next
+        'next_view': next_view
     }
 
     return render_to_response(
@@ -189,3 +192,50 @@ def add_comment(request, subject_name, homework_id):
         )
     
     return show_homework(request, subject_name, homework_id, form)
+    
+
+def login(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('hw_list_all'))
+        
+    invalid_login = False
+    account_disabled = False
+        
+    if 'next' in request.GET.keys():
+        next = request.GET['next']
+    elif 'next' in request.POST.keys():
+        next = request.POST['next']
+    else:
+        next = False
+    
+    if request.POST:
+        user = django_authenticate(username=request.POST['username'], password=request.POST['password'])
+        if user is not None:
+            if user.is_active:
+                django_login(request, user)
+                if next:
+                    return HttpResponseRedirect(next)
+                else:
+                    return HttpResponseRedirect(reverse('hw_list_all'))
+            else:
+                account_disabled = True
+        else:
+            invalid_login = True
+        
+    data = {
+        'invalid_login': invalid_login,
+        'account_disabled': account_disabled,
+        'next' : next
+    }
+        
+    return render_to_response(
+        'homeworkmanager/login.html',
+        data,
+        context_instance = RequestContext(request),
+    )
+    
+
+def logout(request):
+    django_logout(request)
+        
+    return HttpResponseRedirect(reverse('hw_list_all'))

@@ -37,5 +37,15 @@ urlpatterns = patterns('',
         views.remove_homework,
         name='hw_remove'
     ),
+    url(
+        r'^login/$',
+        views.login,
+        name='hw_login'
+    ),
+    url(
+        r'^logout/$',
+        views.logout,
+        name='hw_logout'
+    ),
     url(r'^$', views.list_all_homework, name='hw_list_all'),
 )

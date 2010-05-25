@@ -7,8 +7,6 @@
 {% block page_title %}{{ homework.subject.name }}: {{ homework.short_description }}{% endblock %}
 
 {% block main_content %}
-<a href="{% url hw_list_all %}">&laquo; back to overview</a><br /><br />
-<hr /><br />
 {% show_homework homework %}
 <br />
 <hr />
@@ -17,7 +15,7 @@
 {% show_homework_comments homework %}
 
 
-{% if authenticated %}
+{% if user.is_authenticated %}
 <h2 name="addcomment" id="addcomment">Add a comment...</h2>
     <form method="post" action="{% url hw_add_comment homework.subject.name homework.id %}#addcomment">
         <table>

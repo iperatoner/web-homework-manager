@@ -50,7 +50,7 @@ MEDIA_URL = 'http://localhost:8000/media/'
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/media/admin/'
 
-LOGIN_URL = '/'
+LOGIN_URL = '/login/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'f+*w7__6!9(w(eud+xaxb$n$9kc5*%(_15-h1q-t%kygrydk53'
@@ -66,6 +66,14 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.core.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.request"
 )
 
 ROOT_URLCONF = 'myhomeworkmanager.urls'

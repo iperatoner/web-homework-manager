@@ -13,18 +13,19 @@
 {% block main_content %}
     <form method="post" 
         {% if new %}
-        action="{% url hw_create %}"
+            action="{% url hw_create %}"
         {% else %}
-            {% if not next %}
-                action="{% url hw_edit homework.subject.name homework.id %}"
-            {% else %}
-                action="{% url hw_edit homework.subject.name homework.id %}?next={{ next }}"
-            {% endif %}
+            action="{% url hw_edit homework.subject.name homework.id %}"
         {% endif %}
     >
         <table>
             {{ form.as_table }}
         </table>
+        
+        {% if next_view %}
+            <input type="hidden" name="next_view" value="{{ next_view }}" />
+        {% endif %}
+    
         <input type="submit" value="Save homework" />
     </form>
 {% endblock %}

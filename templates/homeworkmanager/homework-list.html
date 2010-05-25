@@ -4,9 +4,6 @@
 {% block title %}All homework - {{ block.super }}{% endblock %}
 
 {% block main_content %}
-{% if can_add_homework %}
-    <a href="{% url hw_create %}"><input type="button" value="Create" /></a>
-{% endif %}
 
 {% if homework %}
     <table cellspacing="0" cellpadding="0" width="100%">
@@ -14,7 +11,7 @@
             <td style="padding-bottom: 10px;"><strong>Subject</strong></td>
             <td style="padding-bottom: 10px;"><strong>Short description</strong></td>
             <td style="padding-bottom: 10px;"><strong>Until</strong></td>
-            {% if authenticated %}
+            {% if user.is_authenticated %}
                 <td style="padding-bottom: 10px;"><strong>Finished?</strong></td>
             {% endif %}
         </tr>
