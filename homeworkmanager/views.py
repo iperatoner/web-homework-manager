@@ -155,7 +155,7 @@ def remove_homework(request, homework_id):
     try:
         # If the remove button was pressed on the main homework list
         # we have to check if the user has specified a different order
-        if 'orderby' in request.POST.keys() and
+        if 'orderby' in request.POST.keys() and \
             request.POST['orderby'] != DEFAULT_ORDER_BY:
             
             next = reverse('hw_list_all_sorted', 
