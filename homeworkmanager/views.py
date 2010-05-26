@@ -57,6 +57,7 @@ def show_homework(request, subject_name, homework_id, form=False):
     if not form:
         form = HomeworkCommentForm()
         
+        
     data = {
         'homework': homework,
         'form': form
@@ -71,8 +72,10 @@ def show_homework(request, subject_name, homework_id, form=False):
 
 @permission_required('homeworkmanager.add_homework')
 def create_homework(request):
-    """This view displays a form for creating a homework resp. 
-    creates a homework using the form data."""
+    """
+    This view displays a form for creating a homework resp. 
+    creates a homework using the form data.
+    """
     
     form = HomeworkForm(request.POST or None)
 
@@ -96,8 +99,10 @@ def create_homework(request):
 
 @permission_required('homeworkmanager.change_homework')
 def edit_homework(request, subject_name, homework_id):
-    """This view displays a form to edit a homework resp.
-    saves a homework using the form data."""
+    """
+    This view displays a form to edit a homework resp.
+    saves a homework using the form data.
+    """
     
     homework = get_homework_or_404(subject_name, homework_id)
     
@@ -170,8 +175,10 @@ def remove_homework(request, homework_id):
 
 @login_required
 def toggle_finished(request, homework_id):   
-    """This view toggles a homework for the currently 
-    logged in user as finished/unfinished."""
+    """
+    This view toggles a homework for the currently 
+    logged in user as finished/unfinished.
+    """
     
     homework = get_object_or_404(Homework, id=homework_id)
     user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
@@ -276,3 +283,4 @@ def logout(request):
     
     django_logout(request)
     return HttpResponseRedirect(reverse('hw_list_all'))
+
