@@ -18,7 +18,9 @@ def show_homework_comments(context, homework):
         'comments': homework.comment_set.all()
     }
 
-    return data
+    context.update(data)
+    
+    return context
 
     
 @register.inclusion_tag(
@@ -34,5 +36,7 @@ def show_single_comment(context, comment):
         'comment': comment,
         'finished_related_homework': finished
     }
+    
+    context.update(data)
 
-    return data
+    return context

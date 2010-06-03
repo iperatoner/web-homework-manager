@@ -2,7 +2,7 @@
     <td>{{ homework.subject.name }}</td>
     <td><a href="{% url hw_show homework.subject.name homework.id %}">{{ homework.short_description }}</a></td>
     <td>{{ homework.date_ends|date:"d.m.Y" }}</td>
-    {% if authenticated %}
+    {% if user.is_authenticated %}
         <td>
             <form method="post" action="{% url hw_toggle_finished homework.id %}">
                 <input type="hidden" name="orderby" value="{{ orderby }}" />
@@ -14,14 +14,14 @@
             </form>
         </td>
     {% endif %}
-    {% if can_change_homework %}
+    {% if perms.homeworkmanager.can_change_homework %}
         <td>
             <form method="post" action="{% url hw_edit homework.subject.name homework.id %}">
                 <input type="submit" value="Edit" />
             </form>
         </td>
     {% endif %}
-    {% if can_delete_homework %}
+    {% if perms.homeworkmanager.can_delete_homework %}
         <td>
             <form method="post" action="{% url hw_remove homework.id %}">
                 <input type="hidden" name="orderby" value="{{ orderby }}" />
