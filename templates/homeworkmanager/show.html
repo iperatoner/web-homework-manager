@@ -2,27 +2,71 @@
 {% load homework_tags %}
 {% load comment_tags %}
 
-{% block title %}{{ homework.short_description }} - Homework - {{ block.super }}{% endblock %}
+{% block title %}{{ homework.short_description }} - hausaufgabe - {{ block.super }}{% endblock %}
 
-{% block page_title %}{{ homework.subject.name }}: {{ homework.short_description }}{% endblock %}
+{% block page_title %}{{ homework.subject.name|lower }}: &nbsp; {{ homework.short_description }}{% endblock %}
 
 {% block main_content %}
+
+<div class="grid_22 alpha omega" id="main-table-head">
+
+    <div class="grid_3 alpha table-column" id="subject-column-head">
+        fach
+    </div>
+    <!-- end .grid_3 .alpha .table-column #subject-column-head -->
+    
+    <div class="grid_12 table-column" id="longdescr-column-head">
+        beschreibung
+    </div>
+    <!-- end .grid_11 .table-column #longdescr-column-head -->
+    
+    <div class="grid_3 omega table-column" id="until-column-head">
+        bis
+    </div>
+    <!-- end .grid_3 .omega .table-column #until-column-head -->
+    
+</div>
+<!-- end .grid_22 .alpha .omega #main-table-head -->
+
+<div class="clear"></div>
+
 {% show_homework homework %}
-<br />
-<hr />
-
-<h2 name="comments" id="comments">Comments</h2>
-{% show_homework_comments homework %}
 
 
-{% if user.is_authenticated %}
-<h2 name="addcomment" id="addcomment">Add a comment...</h2>
-    <form method="post" action="{% url hw_add_comment homework.subject.name homework.id %}#addcomment">
-        <table>
-            {{ form.as_table }}
-        </table>
-        <input type="submit" value="Submit comment" />
-    </form>
-{% endif %}
+<div class="grid_14 prefix_4 suffix_4 alpha omega" id="comment-part-wrapper">
+
+    <h2 name="comments" id="comments">kommentare</h2>
+        
+    {% show_homework_comments homework %}
+
+    {% if user.is_authenticated %}
+        <div class="grid_12 alpha omega prefix_1 suffix_1" id="comment-form">
+        
+            <h2 name="addcomment" id="addcomment">gib deinen senf...</h2>
+
+            <div class="grid_12 alpha omega common-form" id="comment-form-wrapper">
+                <form method="post" action="{% url hw_add_comment homework.subject.name homework.id %}#addcomment">
+                
+                    <label for="id_text">
+                        <h3>senf:</h3>
+                    </label>
+                    {{ form.text.errors }}
+                    {{ form.text }}
+                    
+                    <input type="submit" value="senf senden" />
+                </form>
+            </div>
+            <!-- end .grid_12 .alpha .omega .prefix_1 .suffix_1 #comment-form-wrapper -->
+            
+        </div>
+        <!-- end .grid_12 .alpha .omega .prefix_1 .suffix_1 #comment-form -->
+
+        <div class="clear"></div>
+    {% endif %}
+    
+</div>
+<!-- end .grid_14 .prefix_4 .suffix_4 .alpha .omega #comment-part-wrapper -->
+
+<div class="clear"></div>
 
 {% endblock %}

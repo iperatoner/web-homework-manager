@@ -1,26 +1,49 @@
 {% extends "base.html" %}
 
-{% block title %}Login - {{ block.super }}{% endblock %}
+{% block title %}login - {{ block.super }}{% endblock %}
 
-{% block page_title %}Login{% endblock %}
+{% block page_title %}login{% endblock %}
 
 {% block main_content %}
 
-{% if account_disabled %}
-<strong>Your account is disabled, so you cannot login.</strong>
-{% endif %}
+<div class="grid_22 alpha omega plain-content" id="login-form">
 
-{% if invalid_login %}
-<strong>Your username or your password was not valid.</strong>
-{% endif %}
+    <div class="grid_19 push_1 column common-form" id="login-form-wrapper">
 
-<form method="post" action="{% url hw_login %}">
-    Username: <input type="text" name="username" /><br />
-    Password: <input type="password" name="password" /><br />
-    {% if next %}
-        <input type="hidden" name="next" value="{{ next }}" />
-    {% endif %}
-    <input type="submit" value="Login" />
-</form>
+        {% if account_disabled %}
+        <div style="margin-top: 20px;">
+            <strong>Dein Account ist deaktiviert.</strong>
+        </div>
+        {% endif %}
+
+        {% if invalid_login %}
+        <div style="margin-top: 20px;">
+            <strong>Der Benutzername oder das Passwort war nicht richtig.</strong>
+        </div>
+        {% endif %}
+
+        <form method="post" action="{% url hw_login %}">
+            <h3>benutzername</h3>
+            <input type="text" name="username" />
+            
+            <h3>passwort</h3>
+            <input type="password" name="password" /><br /><br />
+            
+            {% if next %}
+                <input type="hidden" name="next" value="{{ next }}" />
+            {% endif %}
+            
+            <input type="submit" value="einloggen" />
+        </form>
+        
+    </div>
+    <!-- end grid_19 #new-homework-form -->
+    
+    <div class="clear"></div>
+    
+</div>
+<!-- end .grid_22 #new-homework -->
+
+<div class="clear"></div>
 
 {% endblock %}

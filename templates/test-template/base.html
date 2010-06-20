@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>{% block title %}Homework Manager{% endblock %}</title>
+        <style type="text/css">
+            body, p, table {
+                font-family: Verdana;
+                font-size: 9pt;
+            }
+        </style>
+        {% block extra_head %}{% endblock %}
+    </head>
+    <body>
+        <div style="width: 700px; margin: auto;">
+            <h1 style="font-size: 15pt; text-align: center; margin-bottom: 30px; margin-top: 30px;">Homework Manager - {% block page_title %}Start{% endblock %}</h1>
+            <div style="background: #f4f4f4; -webkit-box-shadow: 0px 0px 12px #efefef; border: 1px solid #fff; padding: 12px;">
+                
+                <a href="{% url hw_list_all %}">Home</a>
+                
+                {% if perms.homeworkmanager.can_add_homework %}
+                    &bull; <a href="{% url hw_create %}">Create</a>
+                {% endif %}
+                
+                &bull;
+                
+                {% if user.is_authenticated %}
+                    <a href="{% url hw_logout %}">Logout</a>
+                {% else %}
+                    <a href="{% url hw_login %}">Login</a>
+                {% endif %}
+                <br />
+                <hr /><br /><br />
+                
+                {% block main_content %}{% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

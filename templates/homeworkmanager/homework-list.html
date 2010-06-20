@@ -1,25 +1,51 @@
 {% extends "base.html" %}
 {% load homework_tags %}
 
-{% block title %}All homework - {{ block.super }}{% endblock %}
-
 {% block main_content %}
 
 {% if homework %}
-    <table cellspacing="0" cellpadding="0" width="100%">
-        <tr>
-            <td style="padding-bottom: 10px;"><strong>Subject</strong></td>
-            <td style="padding-bottom: 10px;"><strong>Short description</strong></td>
-            <td style="padding-bottom: 10px;"><strong>Until</strong></td>
-            {% if user.is_authenticated %}
-                <td style="padding-bottom: 10px;"><strong>Finished?</strong></td>
-            {% endif %}
-        </tr>
-        {% for hw in homework %}
-            {% homework_on_main_list hw %}
-        {% endfor %}
-    </table>
+    <div class="grid_22 alpha omega" id="main-table-head">
+
+        <div class="grid_3 alpha table-column" id="subject-column-head">
+            fach
+        </div>
+        <!-- end .grid_3 .alpha .table-column #subject-column-head -->
+        
+        <div class="grid_10 table-column" id="shortdescr-column-head">
+            kurzbeschreibung
+        </div>
+        <!-- end .grid_11 .table-column #shortdescr-column-head -->
+        
+        <div class="grid_3 table-column" id="until-column-head">
+            bis
+        </div>
+        <!-- end .grid_3 .table-column #until-column-head -->
+        
+        <div class="grid_3 table-column" id="options-column-head">
+            optionen
+        </div>
+        <!-- end .grid_3 .table-column #options-column-head -->
+        
+        {% if user.is_authenticated %}
+            <div class="grid_2 omega table-column" id="finished-column-head">
+                fertig?
+            </div>
+            <!-- end .grid_2 .omega .table-column #finished-column-head -->
+        {% endif %}
+
+        <div class="clear"></div>
+        
+    </div>
+    <!-- end .grid_22 .alpha .omega #main-table-head -->
+
+    <div class="clear"></div>
+
+    {% for hw in homework %}
+        {% homework_on_main_list hw %}
+    {% endfor %}
+    
 {% else %}
-    There is no homework.
+    Hier sind noch keine Hausaufgaben.
 {% endif %}
+
 {% endblock %}

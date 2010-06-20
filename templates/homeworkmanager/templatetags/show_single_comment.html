@@ -1,7 +1,27 @@
-<div class="comment" style="border-bottom: 1px solid #cfcfcf; padding: 10px;">
-    <p>
-        <strong>User:</strong> {{ comment.user.username }}
-        ({% if finished_related_homework %}<span style="color: green;">finished</span>{% else %}<span style="color: red;">not yet finished</span>{% endif %})
-    {{ comment.date_added|date:"d.m. H:i" }}</p>
-    <p>{{ comment.text }}</p>
+<div class="grid_14 alpha omega single-comment" id="single-comment-{{ comment.id }}">
+                            
+    <div class="grid_5 alpha comment-left" id="comment-left-{{ comment.id }}">
+        <div class="comment-left-inner">
+            <strong>{{ comment.user.username }}</strong>
+            
+            {% if finished_related_homework %}
+                (<span style="color: green;">fertig</span>)
+            {% else %}
+                (<span style="color: red;">noch nicht fertig</span>)
+            {% endif %}
+            <br /><br />
+
+            {{ comment.date_added|date:"d.m. \u\m H:i" }}
+        </div>
+    </div>
+    <!-- end .grid_5 .alpha .omega .comment-left #comment-left-{{ comment.id }} -->
+
+    <div class="grid_9 omega comment-right" id="comment-right-{{ comment.id }}">
+        <div class="comment-right-inner">
+            {{ comment.text }}
+        </div>
+    </div>
+    <!-- end .grid_9 .alpha .omega .comment-right #comment-right-{{ comment.id }} -->
+
 </div>
+<!-- end .grid_14 .alpha .omega .single-comment #single-comment-{{ comment.id }} -->

@@ -1,34 +1,71 @@
-<p><strong>Subject:</strong> {{ homework.subject.name }}</p>
-<p><strong>Ends:</strong> {{ homework.date_ends }}</p>
-<p><strong>Short description:</strong> {{ homework.short_description }}</p>
-<p><strong>Description:</strong> {{ homework.long_description }}</p>
-{% if user.is_authenticated %}
-    <p><strong>Finished?</strong></p>
-    <form method="post" action="{% url hw_toggle_finished homework.id %}">
-        <input type="hidden" name="show_homework" value="true" />
-        {% if finished %}
-            <input type="submit" value="Set unfinished" />
-        {% else %}
-            <input type="submit" value="Set finished" />
-        {% endif %}
-    </form>
-{% endif %}
+<div class="grid_22 alpha omega view-table-row" id="table-row-{{ homework.id }}">
+                    
+    <div class="grid_3 alpha table-column" id="subject-column-{{ homework.id }}">
+        {{ homework.subject.name|lower }}
+    </div>
+    <!-- end .grid_3 .alpha .table-column #subject-column-{{ homework.id }} -->
+    
+    <div class="grid_12 table-column" id="shortdescr-column-{{ homework.id }}">
+        {{ homework.long_description }}
+    </div>
+    <!-- end .grid_11 .table-column #shortdescr-column-{{ homework.id }} -->
+    
+    <div class="grid_3 table-column" id="until-column-{{ homework.id }}">
+        {{ homework.date_ends|date:"d.m.Y" }}
+    </div>
+    <!-- end .grid_3 .table-column #until-column-{{ homework.id }} -->
+    
+</div>
+<!-- end .grid_22 .alpha .omega .view-table-row #table-row-1 -->
+
+<div class="clear"></div>
 
 {% if perms.homeworkmanager.can_change_homework or perms.homeworkmanager.can_delete_homework %}
-    <p><strong>Admin options:</strong>
-{% endif %}
+    <div class="grid_22 alpha omega view-options-row" id="table-row-options-{{ homework.id }}">
 
-{% if perms.homeworkmanager.can_change_homework %}
-    <form method="post" action="{% url hw_edit homework.subject.name homework.id %}">
-        <input type="hidden" name="next_view" value="hw_show" />    
-        <input type="submit" value="Edit" />
-    </form>
-{% endif %}
+        <div class="grid_3 alpha table-column" id="options-column-{{ homework.id }}">
+            optionen
+        </div>
+        <!-- end .grid_3 .alpha .table-column #options-column-{{ homework.id }} -->
+        
+        <div class="grid_18 omega table-column" id="option-buttons-column-{{ homework.id }}">
+            {% if perms.homeworkmanager.can_change_homework %}
+                <form method="post" action="{% url hw_edit homework.subject.name homework.id %}"
+                      class="hw-action-form-onview">
+                    <input type="hidden" name="next_view" value="hw_show" />
+                    
+                    <input type="image" src="{{ MEDIA_URL }}fg09b-homework/img/edit.png"
+                           class="hw-action-img-onview" title="Bearbeiten" alt="Bearbeiten" />
+                </form>
+            {% endif %}
+            
+            {% if perms.homeworkmanager.can_delete_homework %}
+                <a href="{% url hw_remove homework.id %}">
+                    <img src="{{ MEDIA_URL }}fg09b-homework/img/delete.png"
+                         class="hw-action-img-onview" title="Löschen" alt="Löschen" />
+                </a>
+            {% endif %}
+            
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url hw_toggle_finished homework.id %}"
+                      class="hw-action-form-onview">
+                    <input type="hidden" name="show_homework" value="true" />
+                    
+                    {% if finished %}
+                        <input type="image" src="{{ MEDIA_URL }}fg09b-homework/img/finished.png"
+                               class="hw-action-img-onview" title="Als 'nicht fertig' markieren" alt="fertig" />
+                    {% else %}
+                        <input type="image" src="{{ MEDIA_URL }}fg09b-homework/img/unfinished.png"
+                               class="hw-action-img-onview" title="Als 'fertig' markieren" alt="noch nicht fertig" />
+                    {% endif %}
+                </form>
+            {% endif %}
 
-{% if perms.homeworkmanager.can_delete_homework %}
-    <a href="{% url hw_remove homework.id %}">Delete</a>
-{% endif %}
+        </div>
+        <!-- end .grid_18 .omega .table-column #option-buttons-column-{{ homework.id }} -->
+        
+    </div>
+    <!-- end .grid_22 .alpha .omega .view-options-row #table-row-options-{{ homework.id }} -->
 
-{% if perms.homeworkmanager.can_change_homework or perms.homeworkmanager.can_delete_homework %}
-    </p>
+    <div class="clear"></div>
 {% endif %}

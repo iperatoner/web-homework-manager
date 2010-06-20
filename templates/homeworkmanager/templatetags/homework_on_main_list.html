@@ -1,32 +1,53 @@
-<tr>
-    <td>{{ homework.subject.name }}</td>
-    <td><a href="{% url hw_show homework.subject.name homework.id %}">{{ homework.short_description }}</a></td>
-    <td>{{ homework.date_ends|date:"d.m.Y" }}</td>
+<div class="grid_22 alpha omega main-table-row" id="table-row-{{ homework.id }}">
+
+    <div class="grid_3 alpha table-column" id="subject-column-{{ homework.id }}">
+        {{ homework.subject.name|lower }}
+    </div>
+    <!-- end .grid_3 .alpha .table-column #subject-column-{{ homework.id }} -->
+    
+    <div class="grid_10 table-column" id="shortdescr-column-{{ homework.id }}">
+        <a href="{% url hw_show homework.subject.name homework.id %}">
+            {{ homework.short_description }}
+        </a>
+    </div>
+    <!-- end .grid_11 .table-column #shortdescr-column-{{ homework.id }} -->
+    
+    <div class="grid_3 table-column" id="until-column-{{ homework.id }}">
+        {{ homework.date_ends|date:"d.m.Y" }}
+    </div>
+    <!-- end .grid_3 .table-column #until-column-{{ homework.id }} -->
+    
+    <div class="grid_3 table-column" id="options-column-{{ homework.id }}">
+        {% if perms.homeworkmanager.can_change_homework %}
+            <a href="{% url hw_edit homework.subject.name homework.id %}">
+                <img src="{{ MEDIA_URL }}fg09b-homework/img/edit.png" class="hw-action-img" title="Bearbeiten" alt="Bearbeiten" />
+            </a>
+        {% endif %}
+        
+        {% if perms.homeworkmanager.can_delete_homework %}
+            <form method="post" action="{% url hw_remove homework.id %}">
+                <input type="hidden" name="orderby" value="{{ orderby }}" />
+                <input type="image" src="{{ MEDIA_URL }}fg09b-homework/img/delete.png" class="hw-action-img" title="Löschen" alt="Löschen" />
+            </form>
+        {% endif %}
+    </div>
+    <!-- end .grid_3 .table-column #options-column-{{ homework.id }} -->
+    
     {% if user.is_authenticated %}
-        <td>
+        <div class="grid_2 omega table-column" id="finished-column-{{ homework.id }}">
             <form method="post" action="{% url hw_toggle_finished homework.id %}">
                 <input type="hidden" name="orderby" value="{{ orderby }}" />
                 {% if finished %}
-                    <input type="submit" value="Set unfinished" />
+                    <input type="image" src="{{ MEDIA_URL }}fg09b-homework/img/finished.png" class="hw-finish-img" title="Als 'nicht fertig' markieren" alt="fertig"  />
                 {% else %}
-                    <input type="submit" value="Set finished" />
+                    <input type="image" src="{{ MEDIA_URL }}fg09b-homework/img/unfinished.png" class="hw-finish-img" title="Als 'fertig' markieren" alt="noch nicht fertig" />
                 {% endif %}
             </form>
-        </td>
+        </div>
+        <!-- end .grid_2 .omega .table-column #finished-column-{{ homework.id }} -->
     {% endif %}
-    {% if perms.homeworkmanager.can_change_homework %}
-        <td>
-            <form method="post" action="{% url hw_edit homework.subject.name homework.id %}">
-                <input type="submit" value="Edit" />
-            </form>
-        </td>
-    {% endif %}
-    {% if perms.homeworkmanager.can_delete_homework %}
-        <td>
-            <form method="post" action="{% url hw_remove homework.id %}">
-                <input type="hidden" name="orderby" value="{{ orderby }}" />
-                <input type="submit" value="Delete" />
-            </form>
-        </td>
-    {% endif %}
-</tr>
+
+    <div class="clear"></div>
+    
+</div>
+<!-- end .grid_22 .alpha .omega #table-row-{{ homework.id }} -->

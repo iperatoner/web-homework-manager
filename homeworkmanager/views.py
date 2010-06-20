@@ -113,7 +113,7 @@ def edit_homework(request, subject_name, homework_id):
     else:
         next_view = False
     
-    if not request.POST or len(request.POST) == 1:
+    if not request.POST or len(request.POST) == 3:
         form = HomeworkForm(instance=homework)
     else:
         form = HomeworkForm(request.POST)

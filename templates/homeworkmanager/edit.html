@@ -1,31 +1,74 @@
 {% extends "base.html" %}
 
-{% block title %}Edit homework - {{ block.super }}{% endblock %}
+{% block title %}Bearbeiten - {{ block.super }}{% endblock %}
+
 {% block extra_head %}
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}admin/css/widgets.css"/>
-<script type="text/javascript" src="/my_admin/jsi18n/"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}admin/js/core.js"></script>
-{{ form.media }}
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}admin/css/widgets.css"/>
+    <script type="text/javascript" src="/my_admin/jsi18n/"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}admin/js/core.js"></script>
+    {{ form.media }}
 {% endblock %}
 
-{% block page_title %}Edit{% endblock %}
+{% block page_title %}
+    {% if new %}
+        Neue Hausaufgabe...
+    {% else %}
+        Bearbeiten: "{{ homework.short_description }}"
+    {% endif %}
+{% endblock %}
 
 {% block main_content %}
-    <form method="post" 
-        {% if new %}
-            action="{% url hw_create %}"
-        {% else %}
-            action="{% url hw_edit homework.subject.name homework.id %}"
-        {% endif %}
-    >
-        <table>
-            {{ form.as_table }}
-        </table>
-        
-        {% if next_view %}
-            <input type="hidden" name="next_view" value="{{ next_view }}" />
-        {% endif %}
+<div class="grid_22 alpha omega plain-content" id="new-homework">
     
-        <input type="submit" value="Save homework" />
-    </form>
+    <div class="grid_19 push_1 column common-form" id="new-homework-form">
+        
+        <form method="post" 
+            {% if new %}
+                action="{% url hw_create %}"
+            {% else %}
+                action="{% url hw_edit homework.subject.name homework.id %}"
+            {% endif %}
+        >
+        
+            <label for="id_subject">
+                <h3>Fach:</h3>
+            </label>
+            {{ form.subject.errors }}
+            {{ form.subject }}
+            
+            <label for="id_short_description">
+                <h3>Kurzbeschreibung:</h3>
+            </label>
+            {{ form.short_description.errors }}
+            {{ form.short_description }}
+            
+            <label for="id_long_description">
+                <h3>Ausf&uuml;hrliche Beschreibung:</h3>
+            </label>
+            {{ form.long_description.errors }}
+            {{ form.long_description }}
+            
+            <label for="id_date_ends">
+                <h3>Zu erledigen bis:</h3>
+            </label>
+            {{ form.date_ends.errors }}
+            {{ form.date_ends }}
+            <br /><br />
+
+            {% if next_view %}
+                <input type="hidden" name="next_view" value="{{ next_view }}" />
+            {% endif %}
+        
+            <input type="submit" value="Hausaufgabe speichern" />
+        </form>
+        
+    </div>
+    <!-- end grid_19 #new-homework-form -->
+    
+    <div class="clear"></div>
+    
+</div>
+<!-- end .grid_22 #new-homework -->
+
+<div class="clear"></div>
 {% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load homework_tags %}
+{% load comment_tags %}
+
+{% block title %}{{ homework.short_description }} - Homework - {{ block.super }}{% endblock %}
+
+{% block page_title %}{{ homework.subject.name }}: {{ homework.short_description }}{% endblock %}
+
+{% block main_content %}
+{% show_homework homework %}
+<br />
+<hr />
+
+<h2 name="comments" id="comments">Comments</h2>
+{% show_homework_comments homework %}
+
+
+{% if user.is_authenticated %}
+<h2 name="addcomment" id="addcomment">Add a comment...</h2>
+    <form method="post" action="{% url hw_add_comment homework.subject.name homework.id %}#addcomment">
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Submit comment" />
+    </form>
+{% endif %}
+
+{% endblock %}

@@ -1,5 +1,12 @@
 {% load comment_tags %}
 
-{% for c in comments %}
-    {% show_single_comment c %}
-{% endfor %}
+<div class="grid_14 alpha omega" id="all-comments-wrapper">
+    
+    {% for c in comments %}
+        {% show_single_comment c %}
+    {% endfor %}
+    
+</div>
+<!-- end .grid_14 .alpha .omega #all-comments-wrapper -->
+
+<div class="clear"></div>
