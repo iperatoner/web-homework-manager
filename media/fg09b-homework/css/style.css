@@ -122,28 +122,22 @@ div#content-wrapper {
 
 /*** ACTION IMAGES ***/
 
-img.hw-action-img, input.hw-action-img {
+.hw-action {
     margin-left: 4px;
     margin-right: 6px;
 }
 
-img.hw-action-img-onview, input.hw-action-img-onview {
+.hw-action-onview {
     margin-right: 15px;
     position: relative;
     top: 2px;
 }
 
-img.hw-finish-img, input.hw-finish-img {
+.hw-finish {
     margin-left: 10px;
 }
 
-img.hw-action-img, 
-img.hw-action-img-onview, 
-img.hw-finish-img,
-input.hw-action-img, 
-input.hw-action-img-onview, 
-input.hw-finish-img,
-form.hw-action-form-onview {
+.hw-action, .hw-action-form {
     float: left;
 }
 

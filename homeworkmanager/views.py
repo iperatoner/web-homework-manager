@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate as django_authenticate
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.forms import UserCreationForm
 
 from django.template import RequestContext
 
@@ -283,4 +284,27 @@ def logout(request):
     
     django_logout(request)
     return HttpResponseRedirect(reverse('hw_list_all'))
+
+
+def register(request):
+    """This view registers a new users resp. displays a form to do so."""
+    
+    if not request.POST:
+        form = UserCreationForm()
+    else:
+        form = UserCreationForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('hw_list_all'))
+        
+    data = {
+        'form': form,
+    }
+        
+    return render_to_response(
+        'homeworkmanager/register.html',
+        data,
+        context_instance = RequestContext(request),
+    )
 

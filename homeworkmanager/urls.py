@@ -38,6 +38,11 @@ urlpatterns = patterns('',
         name='hw_remove'
     ),
     url(
+        r'^register/$',
+        views.register,
+        name='hw_register'
+    ),
+    url(
         r'^login/$',
         views.login,
         name='hw_login'

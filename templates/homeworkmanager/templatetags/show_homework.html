@@ -31,32 +31,32 @@
         <div class="grid_18 omega table-column" id="option-buttons-column-{{ homework.id }}">
             {% if perms.homeworkmanager.can_change_homework %}
                 <form method="post" action="{% url hw_edit homework.subject.name homework.id %}"
-                      class="hw-action-form-onview">
+                      class="hw-action-form">
                     <input type="hidden" name="next_view" value="hw_show" />
                     
                     <input type="image" src="{{ MEDIA_URL }}fg09b-homework/img/edit.png"
-                           class="hw-action-img-onview" title="Bearbeiten" alt="Bearbeiten" />
+                           class="hw-action" title="Bearbeiten" alt="Bearbeiten" />
                 </form>
             {% endif %}
             
             {% if perms.homeworkmanager.can_delete_homework %}
                 <a href="{% url hw_remove homework.id %}">
                     <img src="{{ MEDIA_URL }}fg09b-homework/img/delete.png"
-                         class="hw-action-img-onview" title="Löschen" alt="Löschen" />
+                         class="hw-action" title="Löschen" alt="Löschen" />
                 </a>
             {% endif %}
             
             {% if user.is_authenticated %}
                 <form method="post" action="{% url hw_toggle_finished homework.id %}"
-                      class="hw-action-form-onview">
+                      class="hw-action-form">
                     <input type="hidden" name="show_homework" value="true" />
                     
                     {% if finished %}
                         <input type="image" src="{{ MEDIA_URL }}fg09b-homework/img/finished.png"
-                               class="hw-action-img-onview" title="Als 'nicht fertig' markieren" alt="fertig" />
+                               class="hw-action" title="Als 'nicht fertig' markieren" alt="fertig" />
                     {% else %}
                         <input type="image" src="{{ MEDIA_URL }}fg09b-homework/img/unfinished.png"
-                               class="hw-action-img-onview" title="Als 'fertig' markieren" alt="noch nicht fertig" />
+                               class="hw-action" title="Als 'fertig' markieren" alt="noch nicht fertig" />
                     {% endif %}
                 </form>
             {% endif %}

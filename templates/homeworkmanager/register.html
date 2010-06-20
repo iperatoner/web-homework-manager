@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}registrieren - {{ block.super }}{% endblock %}
+
+{% block page_title %}registrieren{% endblock %}
+
+{% block main_content %}
+
+<div class="grid_22 alpha omega plain-content" id="register-form">
+
+    <div class="grid_19 push_1 column common-form" id="register-form-wrapper">
+
+        <form method="post" action="{% url hw_register %}">
+            {{ form.as_p }}
+            
+            <input type="submit" value="registrieren" />
+        </form>
+        
+    </div>
+    <!-- end grid_19 #register-form-wrapper -->
+    
+    <div class="clear"></div>
+    
+</div>
+<!-- end .grid_22 #register-form -->
+
+<div class="clear"></div>
+
+{% endblock %}
