@@ -8,10 +8,17 @@
         <title>{% block title %}fg09b hausaufgaben{% endblock %}</title>
 
 
-        <link rel="stylesheet" media="screen" href="{{ MEDIA_URL }}fg09b-homework/css/reset.css" />
-        <link rel="stylesheet" media="screen" href="{{ MEDIA_URL }}fg09b-homework/css/text.css" />
-        <link rel="stylesheet" media="screen" href="{{ MEDIA_URL }}fg09b-homework/css/960.css" />
-        <link rel="stylesheet" media="screen" href="{{ MEDIA_URL }}fg09b-homework/css/style.css" />
+        <!--<link rel="stylesheet" media="screen" href="{{ MEDIA_URL }}fg09b-homework/css/fonts.css" />-->
+        <link rel="stylesheet" media="screen" 
+        href="{{ MEDIA_URL }}fg09b-homework/css/reset.css" />
+        
+        <link rel="stylesheet" media="screen"
+        href="{{ MEDIA_URL }}fg09b-homework/css/text.css" />
+        
+        <link rel="stylesheet" media="screen"
+        href="{{ MEDIA_URL }}fg09b-homework/css/960.css" />
+        
+        <!--<link rel="stylesheet" media="screen" href="{{ MEDIA_URL }}fg09b-homework/css/style.css" />-->
         
         {% block extra_head %}{% endblock %}
     </head>
@@ -46,18 +53,27 @@
                 
                     <div class="middlizer" id="global-actions-inner">
                         <div class="grid_6 alpha omega">
-                            {% if perms.homeworkmanager.add_homework %}
-                                <a class="global-action" href="{% url hw_create %}">
-                                    neue hausaufgabe
-                                </a> 
-                            {% endif %}
-                            
-                            &nbsp;&nbsp;&nbsp;
                             
                             {% if user.is_authenticated %}
+                            
+                                {% if perms.homeworkmanager.add_homework %}
+                                    <a class="global-action" href="{% url hw_create %}">
+                                        neue hausaufgabe
+                                    </a> 
+                                {% endif %}
+                                
+                                &nbsp;&nbsp;&nbsp;
+                                
                                 <a class="global-action" href="{% url hw_logout %}">logout</a>
+                                
                             {% else %}
+                            
+                                <a class="global-action" href="{% url hw_register %}">registrieren</a>
+                                
+                                &nbsp;&nbsp;&nbsp;
+                                
                                 <a class="global-action" href="{% url hw_login %}">login</a>
+                                
                             {% endif %}
                         </div>
                         <!-- end .grid_6 .alpha .omega -->

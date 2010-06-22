@@ -35,7 +35,7 @@ div#top-bg {
     div#global-actions {
         font-size: 1.1em;
         font-family: 'Aller';
-        
+
         height: 68px;
         padding-top: 9px;
 
@@ -102,7 +102,7 @@ div#content-wrapper {
     }
 
     div.table-column {
-        font-family: 'Aller';
+        font-family: 'Aller','Helvetica Neue',Arial,'Liberation Sans',FreeSans,sans-serif;
     }
 
         div.table-column a {

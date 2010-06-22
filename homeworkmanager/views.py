@@ -9,8 +9,6 @@ from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Permission
 
-from django.contrib.contenttypes.models import ContentType
-
 from django.template import RequestContext
 
 from homeworkmanager.models import Teacher, Subject, Homework, UserProfile
@@ -321,12 +319,19 @@ muss ein Administrator dich freischalten.
 Benutzername: %s
 Passwort: %s
 
-lg, fg09b.de hausaufgabensystem
-            """ % (user.username, user.username, form.cleaned_data['password1'])
+lg, fg09b.de hausaufgabensystem""" % (user.username, user.username, form.cleaned_data['password1'])
             
-            email_from = 'registrierung@fg09b.de'
+            email_subject_cc = 'Neuer Benutzer auf FG09B.de'
+            email_body_cc = """Auf fg09b.de hat sich ein neuer Benutzer registriert.
             
-            #send_mail(email_subject, email_body, email_from, [user.email])
+-------------------------------------------------------------
+
+            """ + email_body
+            
+            email_from = 'fg09b-registrierung@fg09b.de'
+            
+            send_mail(email_subject, email_body, email_from, [user.email])
+            send_mail(email_subject_cc, email_body_cc, email_from, ['immanuel.peratoner@gmail.com'])
             
             return HttpResponseRedirect(reverse('hw_list_all'))
         

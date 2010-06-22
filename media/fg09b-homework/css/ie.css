@@ -1,0 +1,34 @@
+@font-face {
+    font-family: "Aller";
+    src: url(../fonts/Aller.eot) format('truetype');
+}
+
+@font-face {
+    font-family: "Aller";
+    font-weight: bold;
+    src: local('Aller_Bd'), url(../fonts/Aller_Bd.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "Aller";
+    font-style: italic;
+    src: local('Aller_It'), url(../fonts/Aller_It.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "Aller";
+    font-weight: bold;
+    font-style: italic;
+    src: local('Aller_BdIt'), url(../fonts/Aller_BdIt.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "Aller Light";
+    src: local('Aller_Lt'), url(../fonts/AllerLight.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "Aller Light";
+    font-style: italic;
+    src: local('Aller_LtIt'), url(../fonts/AllerLight_It.ttf) format('truetype');
+}
