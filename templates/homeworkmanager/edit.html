@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 
-{% block title %}Bearbeiten - {{ block.super }}{% endblock %}
+{% block title %}bearbeiten - {{ block.super }}{% endblock %}
 
 {% block extra_head %}
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}admin/css/widgets.css"/>
+    <link rel="stylesheet" type="text/css" href="/media/admin/css/widgets.css"/>
     <script type="text/javascript" src="/my_admin/jsi18n/"></script>
-    <script type="text/javascript" src="{{ MEDIA_URL }}admin/js/core.js"></script>
+    <script type="text/javascript" src="/media/admin/js/core.js"></script>
     {{ form.media }}
 {% endblock %}
 
 {% block page_title %}
     {% if new %}
-        Neue Hausaufgabe...
+        neue hausaufgabe...
     {% else %}
-        Bearbeiten: "{{ homework.short_description }}"
+        bearbeiten: "{{ homework.short_description }}"
     {% endif %}
 {% endblock %}
 
@@ -31,25 +31,25 @@
         >
         
             <label for="id_subject">
-                <h3>Fach:</h3>
+                <h3>fach:</h3>
             </label>
             {{ form.subject.errors }}
             {{ form.subject }}
             
             <label for="id_short_description">
-                <h3>Kurzbeschreibung:</h3>
+                <h3>kurzbeschreibung:</h3>
             </label>
             {{ form.short_description.errors }}
             {{ form.short_description }}
             
             <label for="id_long_description">
-                <h3>Ausf&uuml;hrliche Beschreibung:</h3>
+                <h3>ausf&uuml;hrliche beschreibung:</h3>
             </label>
             {{ form.long_description.errors }}
             {{ form.long_description }}
             
             <label for="id_date_ends">
-                <h3>Zu erledigen bis:</h3>
+                <h3>zu erledigen bis:</h3>
             </label>
             {{ form.date_ends.errors }}
             {{ form.date_ends }}
@@ -59,7 +59,7 @@
                 <input type="hidden" name="next_view" value="{{ next_view }}" />
             {% endif %}
         
-            <input type="submit" value="Hausaufgabe speichern" />
+            <input type="submit" value="hausaufgabe speichern" />
         </form>
         
     </div>
