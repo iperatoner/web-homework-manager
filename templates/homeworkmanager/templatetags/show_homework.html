@@ -20,7 +20,7 @@
 
 <div class="clear"></div>
 
-{% if perms.homeworkmanager.can_change_homework or perms.homeworkmanager.can_delete_homework %}
+{% if perms.homeworkmanager.change_homework or perms.homeworkmanager.delete_homework %}
     <div class="grid_22 alpha omega view-options-row" id="table-row-options-{{ homework.id }}">
 
         <div class="grid_3 alpha table-column" id="options-column-{{ homework.id }}">
@@ -29,7 +29,7 @@
         <!-- end .grid_3 .alpha .table-column #options-column-{{ homework.id }} -->
         
         <div class="grid_18 omega table-column" id="option-buttons-column-{{ homework.id }}">
-            {% if perms.homeworkmanager.can_change_homework %}
+            {% if perms.homeworkmanager.change_homework %}
                 <form method="post" action="{% url hw_edit homework.subject.name homework.id %}"
                       class="hw-action-form">
                     <input type="hidden" name="next_view" value="hw_show" />
@@ -39,7 +39,7 @@
                 </form>
             {% endif %}
             
-            {% if perms.homeworkmanager.can_delete_homework %}
+            {% if perms.homeworkmanager.delete_homework %}
                 <a href="{% url hw_remove homework.id %}">
                     <img src="{{ MEDIA_URL }}fg09b-homework/img/delete.png"
                          class="hw-action" title="Löschen" alt="Löschen" />

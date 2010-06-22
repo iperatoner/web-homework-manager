@@ -11,7 +11,32 @@
     <div class="grid_19 push_1 column common-form" id="register-form-wrapper">
 
         <form method="post" action="{% url hw_register %}">
-            {{ form.as_p }}
+        
+            <label for="id_username">
+                <h3>benutzername</h3>
+            </label>
+            {{ form.username.errors }}
+            {{ form.username }}
+        
+            <label for="id_email">
+                <h3>e-mail</h3>
+            </label>
+            {{ form.email.errors }}
+            {{ form.email }}
+            
+            <label for="id_password1">
+                <h3>passwort</h3>
+            </label>
+            {{ form.password1.errors }}
+            {{ form.password1 }}
+            
+            <label for="id_password2">
+                <h3>passwort wiederholen</h3>
+            </label>
+            {{ form.password2.errors }}
+            {{ form.password2 }}
+            
+            <br /><br />
             
             <input type="submit" value="registrieren" />
         </form>

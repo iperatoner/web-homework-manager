@@ -1,7 +1,10 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+
 from django.contrib.admin import widgets as adminwidgets
 
 from homeworkmanager.models import Homework, HomeworkComment, Subject
+
 
 class HomeworkForm(forms.ModelForm):
     """Form for creating/editing one homework."""
@@ -41,3 +44,10 @@ class HomeworkCommentForm(forms.ModelForm):
     class Meta(object):
         model = HomeworkComment
         fields = ('text',)
+        
+        
+class UserRegistrationForm(UserCreationForm):
+    """Form for creating a new user."""
+    
+    email = forms.EmailField(max_length=128)
+

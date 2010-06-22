@@ -18,13 +18,13 @@
     <!-- end .grid_3 .table-column #until-column-{{ homework.id }} -->
     
     <div class="grid_3 table-column" id="options-column-{{ homework.id }}">
-        {% if perms.homeworkmanager.can_change_homework %}
+        {% if perms.homeworkmanager.change_homework %}
             <a href="{% url hw_edit homework.subject.name homework.id %}">
                 <img src="{{ MEDIA_URL }}fg09b-homework/img/edit.png" class="hw-action" title="Bearbeiten" alt="Bearbeiten" />
             </a>
         {% endif %}
         
-        {% if perms.homeworkmanager.can_delete_homework %}
+        {% if perms.homeworkmanager.delete_homework %}
             <form method="post" action="{% url hw_remove homework.id %}" class="hw-action-form">
                 <input type="hidden" name="orderby" value="{{ orderby }}" />
                 <input type="image" src="{{ MEDIA_URL }}fg09b-homework/img/delete.png" class="hw-action" title="Löschen" alt="Löschen" />

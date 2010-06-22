@@ -1,18 +1,22 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import Http404, HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.core.mail import send_mail
 
 from django.contrib.auth import authenticate as django_authenticate
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import Permission
+
+from django.contrib.contenttypes.models import ContentType
 
 from django.template import RequestContext
 
 from homeworkmanager.models import Teacher, Subject, Homework, UserProfile
 from homeworkmanager.models import HomeworkComment, FinishedHomework
 from homeworkmanager.forms import HomeworkForm, HomeworkCommentForm
+from homeworkmanager.forms import UserRegistrationForm
 from homeworkmanager.util import get_homework_or_404
 
 # Ordering possibilities
@@ -290,12 +294,40 @@ def register(request):
     """This view registers a new users resp. displays a form to do so."""
     
     if not request.POST:
-        form = UserCreationForm()
+        form = UserRegistrationForm()
     else:
-        form = UserCreationForm(request.POST)
+        form = UserRegistrationForm(request.POST)
         
         if form.is_valid():
-            form.save()
+            user = form.save(commit=False)
+            user.is_active = False
+            user.email = form.cleaned_data['email']
+            user.save()
+            
+            # Adding default permissions
+            perms = Permission.objects.filter(
+                codename__in=['add_homework', 'change_homework']
+            )
+            user.user_permissions.add(perms[0], perms[1])
+            user.save()
+            
+            # Notification email
+            email_subject = 'Registrierung auf fg09b.de'
+            email_body = """Hallo %s,
+            
+du hast dich auf fg09b.de registriert. Bevor du deinen Account nutzen kannst,
+muss ein Administrator dich freischalten.
+
+Benutzername: %s
+Passwort: %s
+
+lg, fg09b.de hausaufgabensystem
+            """ % (user.username, user.username, form.cleaned_data['password1'])
+            
+            email_from = 'registrierung@fg09b.de'
+            
+            #send_mail(email_subject, email_body, email_from, [user.email])
+            
             return HttpResponseRedirect(reverse('hw_list_all'))
         
     data = {
