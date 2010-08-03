@@ -3,6 +3,56 @@
 
 {% block main_content %}
 
+{% if announcements %}
+    <div id="announcements">
+        <div class="grid_22 alpha omega" id="announcement-table-head">
+
+            <div class="grid_22 alpha omega table-column"
+                 id="announcements-column-head">
+                neuigkeiten
+            </div>
+            <!-- end .grid_3 .alpha .omega .table-column #subject-column-head -->
+
+            <div class="clear"></div>
+        </div>
+        <!-- end .grid_22 .alpha .omega #announcement-table-head -->
+
+        <div class="clear"></div>
+        
+        {% for a in announcements %}
+        
+            <div class="grid_22 alpha omega main-table-row"
+                 id="announcement-row-{{ a.id }}">
+
+                <div class="grid_16 alpha table-column" id="title-column-{{ a.id }}">
+                    {% if forloop.counter == 1 %}
+                        <strong>
+                    {% endif %}
+                    
+                        {{ a.title|lower }}
+        
+                    {% if forloop.counter == 1 %}
+                        </strong>
+                    {% endif %}
+                </div>
+                <!-- end .grid_18 .alpha .table-column #title-column-{{ a.id }} -->
+                
+                <div class="grid_3 omega table-column" id="date-column-{{ a.id }}">
+                    {{ a.date_created|date:"d.m.Y" }}
+                </div>
+                <!-- end .grid_4 .table-column #date-column-{{ a.id }} -->
+                
+            </div>
+            <!-- end .grid_22 .alpha .omega #table-row-{{ a.id }} -->
+
+            <div class="clear"></div>
+            
+        {% endfor %}
+    </div>
+    
+<br />
+<br />
+{% endif %}
 {% if homework %}
     <div class="grid_22 alpha omega" id="main-table-head">
 
